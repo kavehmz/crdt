@@ -39,18 +39,20 @@ import (
 )
 
 func main() {
-	c := crdt.CRDT{redisURL:"redis://localhost:6379/"}
-    c.Init()
-    c.Add("Item")
-    c.AddTs("Item2", Time.Now())
-    c.RemoveTs("Item", Time.Now())
-    c.RemoveTs("Item2", time.Now().Add(-1 * time.Second))
+	c := CRDT{RedisURL: "redis://localhost:6379/"}
+	c.Init()
+	c.Add("Item", time.Now())
+	c.Add("Item2", time.Now())
+	c.Remove("Item", time.Now())
+	c.Remove("Item2", time.Now().Add(-1*time.Second))
 
-    l:=c.List()
-    # l includes Item2
+	l := c.Get()
+	fmt.Println(l)
+	// l includes Item2
 
-    c.Add("Item")
-    l:=c.List()
-    # l includes Item and Item2
+	c.Add("Item", time.Now())
+	l = c.Get()
+	fmt.Println(l)
+	// l includes Item and Item2
 }
 ```
